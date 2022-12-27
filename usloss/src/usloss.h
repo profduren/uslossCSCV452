@@ -8,12 +8,7 @@
 
 #include <stdarg.h>
 #include <signal.h>
-#define macos
-#ifndef macos
 #include <ucontext.h>
-#else
-#include <sys/ucontext.h>
-#endif
 
 typedef struct context {
     void		(*start)();	/* Starting routine. */

@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <signal.h>
 #include <unistd.h>
+#include <time.h>
 #include "project.h"
 #include "globals.h"
 #include "main.h"
@@ -147,6 +148,16 @@ int sys_clock(void)
     int enabled;
 
     enabled = int_off();
+
+#ifdef REAL_DELAYS
+    static int firstClock = 0;
+    if (!firstClock)
+    {
+        firstClock = clock();
+    }
+
+    value = clock() - firstClock;
+#else
     check_kernel_mode("sys_clock");
     partial_ticks += atleast(5);
     if (partial_ticks >= ALARM_TIME) {
@@ -154,9 +165,11 @@ int sys_clock(void)
 	partial_ticks -= ALARM_TIME;
     }
     value =  pclock_ticks * ALARM_TIME + partial_ticks;  /* syscalls per tick */
+#endif
      if (enabled) {
-	int_on();
+    	int_on();
     }
+
     return value;
 }
 
