@@ -1,5 +1,5 @@
 
-VERSION=3.0.0
+VERSION=3.0.2
 
 # List of object files to generate (and the list of source files, generated
 # by pattern substitution)
